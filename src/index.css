@@ -1,0 +1,24 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  .wrapper {
+    @apply container mx-auto;
+  }
+  .title {
+    @apply text-2xl lg:text-4xl text-sky-600;
+  }
+  .label {
+    @apply text-xs lg:text-sm text-gray-400;
+  }
+  .input {
+    @apply px-4 py-2;
+  }
+  .error {
+    @apply text-xs lg:text-sm text-red-500;
+  }
+  .submit {
+    @apply px-4 py-2 bg-sky-600 cursor-pointer text-white hover:bg-sky-700 transition-all w-full;
+  }
+}
