@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 // import hook form
 import { useForm } from "react-hook-form";
@@ -7,13 +7,23 @@ import { useForm } from "react-hook-form";
 import Img from "../assets/view-new-york-city-night-time-min.webp";
 
 const Form_0 = () => {
+  // successful state
+  const [successMsg, setSuccessMsg] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+    reset,
+  } = useForm({
+    mode: "onBlur",
+  });
 
-  const onSubmit = (data) => console.log(data);
+  const onSubmit = (data) => {
+    console.log(data);
+    setSuccessMsg("User registration is successful");
+    reset();
+  };
   console.log("Errors:", errors);
 
   return (
@@ -31,12 +41,15 @@ const Form_0 = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="shadow-lg lg:shadow-xl bg-slate-200 p-4 flex flex-col gap-y-4"
         >
+          {/* successful message */}
+          {successMsg && <p className="text-green-500 text-lg">{successMsg}</p>}
+          
           {/* name */}
           <div className="flex flex-col">
             <label className="label">Name *</label>
             <input
               type="text"
-              placeholder="Name"
+              placeholder="Your name"
               {...register("name", { required: true, maxLength: 20 })}
               className="input"
             />
@@ -54,7 +67,7 @@ const Form_0 = () => {
             <label className="label">Email *</label>
             <input
               type="email"
-              placeholder="Email"
+              placeholder="your_email@example.com"
               {...register("email", {
                 required: true,
                 pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -71,12 +84,12 @@ const Form_0 = () => {
 
           {/* phone */}
           <div className="flex flex-col">
-            <label className="label">Phone number(+01234567890)</label>
+            <label className="label">Phone number</label>
             <input
               type="tel"
-              placeholder="Phone number"
+              placeholder="+01234567890"
               {...register("phoneNumber", {
-                required: true,
+                required: false,
                 pattern:
                   /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/,
               })}
@@ -84,6 +97,38 @@ const Form_0 = () => {
             />
             {errors.phoneNumber && (
               <p className="error">Invalid phone number</p>
+            )}
+          </div>
+
+          {/* password */}
+          <div className="flex flex-col">
+            <label className="label">Password *</label>
+            <input
+              type="password"
+              placeholder="Enter password"
+              className="input"
+              {...register("password", {
+                required: "Password is required",
+                minLength: {
+                  value: 6,
+                  message: "Password should be at-least 6 characters",
+                },
+                validate: {
+                  matchPattern: (value) =>
+                    /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)(?=.*[!@#$*])/.test(
+                      value
+                    ),
+                },
+              })}
+            />
+            {errors.password && (
+              <p className="error">{errors.password.message}</p>
+            )}
+            {errors.password?.type === "matchPattern" && (
+              <p className="error">
+                Password should contain at least one uppercase letter, lowercase
+                letter, digit, and special symbol.
+              </p>
             )}
           </div>
 

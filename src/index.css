@@ -13,7 +13,7 @@
     @apply text-xs lg:text-sm text-gray-400;
   }
   .input {
-    @apply px-4 py-2;
+    @apply px-4 py-2 focus:invalid:outline-red-500 invalid:text-red-500;
   }
   .error {
     @apply text-xs lg:text-sm text-red-500;
